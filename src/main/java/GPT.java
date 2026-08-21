@@ -9,10 +9,10 @@ public class GPT {
 
         System.out.println(line);
         System.out.println(banner);
-        System.out.println("Hello! I'm GPT.");
-        System.out.println("What can I do for you?");
+        System.out.println("Beep Boop, I'm GPT.");
+        System.out.println("I'm gonna use all your tokens today.");
         System.out.println(line);
-        System.out.println("Bye. Hope to see you again soon!");
+        System.out.println("Bye. Make sure to buy more tokens");
         System.out.println(line);
     }
 }
