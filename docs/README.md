@@ -1,4 +1,4 @@
-# GPT User Guide
+# Gpt User Guide
 
 // Update the title above to match the actual product name
 

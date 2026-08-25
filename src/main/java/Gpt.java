@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class GPT {
+public class Gpt {
     public static void main(String[] args) {
         String banner = "  ____ ____ _____ \n"
                 + " / ___|  _ \\_   _|\n"
@@ -16,7 +16,7 @@ public class GPT {
 
         System.out.println(line);
         System.out.println(banner);
-        System.out.println("Beep Boop, I'm GPT.");
+        System.out.println("Beep Boop, I'm Gpt.");
         System.out.println("What's cooking, I'm gonna use all your tokens today.");
         System.out.println(line);
         System.out.println();
