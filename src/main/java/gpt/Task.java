@@ -1,18 +1,31 @@
+package gpt;
+
+/**
+ * Represents a task stored by the chatbot.
+ */
 public class Task {
     private String description;
     private boolean isDone;
 
-
-    public Task(String description){
+    /**
+     * Creates an incomplete task with the given description.
+     */
+    public Task(String description) {
         this.description = description;
         this.isDone = false;
     }
 
-    public void setAsDone(){
+    /**
+     * Marks this task as done.
+     */
+    public void markAsDone() {
         this.isDone = true;
     }
 
-    public void setAsNotDone(){
+    /**
+     * Marks this task as not done.
+     */
+    public void markAsNotDone() {
         this.isDone = false;
     }
 
@@ -20,13 +33,14 @@ public class Task {
         return description;
     }
 
-    public String getIcon(){
-        if (isDone()){
+    public String getIcon() {
+        if (isDone()) {
             return "[X]";
-        } else{
+        } else {
             return "[ ]";
         }
     }
+
     public boolean isDone() {
         return isDone;
     }
