@@ -54,21 +54,20 @@ public class Gpt {
                 System.out.println("  " + tasks[taskNumber]);
             } else if (commandWord.equals("todo")) {
                 String description = input.substring("todo".length()).trim();
-                tasks[taskCount] = Task.createTodo(description);
+                tasks[taskCount] = new Todo(description);
                 taskCount++;
                 printAddedTask(tasks[taskCount - 1], taskCount);
             } else if (commandWord.equals("deadline")) {
                 String arguments = input.substring("deadline".length()).trim();
                 String[] parts = arguments.split(" /by ", 2);
-                tasks[taskCount] = Task.createDeadline(parts[0].trim(), parts[1].trim());
+                tasks[taskCount] = new Deadline(parts[0].trim(), parts[1].trim());
                 taskCount++;
                 printAddedTask(tasks[taskCount - 1], taskCount);
             } else if (commandWord.equals("event")) {
                 String arguments = input.substring("event".length()).trim();
                 String[] fromParts = arguments.split(" /from ", 2);
                 String[] toParts = fromParts[1].split(" /to ", 2);
-                tasks[taskCount] = Task.createEvent(fromParts[0].trim(), toParts[0].trim(),
-                        toParts[1].trim());
+                tasks[taskCount] = new Event(fromParts[0].trim(), toParts[0].trim(), toParts[1].trim());
                 taskCount++;
                 printAddedTask(tasks[taskCount - 1], taskCount);
             } else {
