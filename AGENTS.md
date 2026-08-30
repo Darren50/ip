@@ -34,6 +34,15 @@ Follow the project-specific `seedu-java-coding-standard` skill for all Java code
 
 Follow the project-specific `seedu-git-standard` skill when proposing, reviewing, or creating Git commits.
 
+## Testing
+
+After each code update, do both of the following:
+
+1. Update `test/ui-test-plan.md` if the change alters the console output or adds a command or task type that no scenario covers.
+2. Invoke the project-specific `test-ui` skill to run the test plan, and report the result.
+
+Update the test plan before running the tests, so that the plan always describes the intended behavior.
+
 ## Git
 
 Use lightweight tags unless the user requests an annotated tag.
