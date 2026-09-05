@@ -76,7 +76,7 @@ bye
 
 ```
 ____________________________________________________________
-Beep boop, I don't know that command yet.
+OOPS!!! I don't know what that command means.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
@@ -224,6 +224,114 @@ ____________________________________________________________
 
 ---
 
+## TC-06: Invalid task creation commands
+
+**Aim:** Verify that incomplete `todo`, `deadline`, and `event` commands show
+friendly error messages instead of crashing the chatbot.
+
+**Input**
+
+```
+todo
+deadline return book
+deadline /by Sunday
+deadline return book /by
+event project meeting
+event /from Mon 2pm /to 4pm
+event project meeting /from Mon 2pm
+event project meeting /from /to 4pm
+event project meeting /from Mon 2pm /to
+bye
+```
+
+**Expected output**
+
+```
+____________________________________________________________
+OOPS!!! The description of a todo cannot be empty.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! A deadline needs a /by date or time.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The description of a deadline cannot be empty.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The deadline date or time cannot be empty.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! An event needs a /from date or time.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The description of an event cannot be empty.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! An event needs a /to date or time.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The event start date or time cannot be empty.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The event end date or time cannot be empty.
+____________________________________________________________
+____________________________________________________________
+Bye. Make sure to buy more tokens
+____________________________________________________________
+```
+
+---
+
+## TC-07: Invalid task status commands
+
+**Aim:** Verify that invalid `mark` and `unmark` commands show friendly error
+messages instead of crashing the chatbot.
+
+**Input**
+
+```
+todo read book
+mark
+mark abc
+mark 2
+unmark
+unmark abc
+unmark 0
+bye
+```
+
+**Expected output**
+
+```
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please tell me which task number to update.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Task numbers must be whole numbers.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please tell me which task number to update.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Task numbers must be whole numbers.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Bye. Make sure to buy more tokens
+____________________________________________________________
+```
+
+---
+
 ## Known limitations locked in by this plan
 
 These are current behaviors the tests deliberately record, not defects to fix
@@ -231,5 +339,3 @@ before the tests pass:
 
 * The count message reads `Now you have 1 tasks in the list.` even for a single
   task.
-* Malformed commands such as `deadline foo` with no `/by` crash the program.
-  Input validation is added in a later increment, so no scenario covers it yet.
