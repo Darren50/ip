@@ -61,7 +61,10 @@ public class Gpt {
             markTask(input);
         } else if (commandWord.equals("unmark")) {
             unmarkTask(input);
-        } else if (commandWord.equals("todo")) {
+        }else if (commandWord.equals("delete")) {
+            deleteTask(input);
+        }
+        else if (commandWord.equals("todo")) {
             addTask(parseTodo(input));
         } else if (commandWord.equals("deadline")) {
             addTask(parseDeadline(input));
@@ -97,17 +100,36 @@ public class Gpt {
      * Marks the task named in the given input as done.
      */
     private void markTask(String input) throws GptException {
-        Task task = getTask(input);
+        Task task = tasks[getTaskIndex(input)];
         task.markAsDone();
         System.out.println("Beep boop, task has been marked.");
         System.out.println("  " + task);
     }
 
     /**
+     * Deletes the task named in the given input.
+     */
+    private void deleteTask(String input) throws GptException {
+        int taskIndex = getTaskIndex(input);
+        Task deletedTask = tasks[taskIndex];
+
+        for (int i = taskIndex; i < taskCount - 1; i++) {
+            tasks[i] = tasks[i + 1];
+        }
+
+        tasks[taskCount - 1] = null;
+        taskCount--;
+
+        System.out.println("Got it. I've removed this task:");
+        System.out.println("  " + deletedTask);
+        System.out.println("Now you have " + taskCount + " tasks in the list.");
+    }
+
+    /**
      * Marks the task named in the given input as not done.
      */
     private void unmarkTask(String input) throws GptException {
-        Task task = getTask(input);
+        Task task = tasks[getTaskIndex(input)];
         task.markAsNotDone();
         System.out.println("Beep boop, task has been unmarked.");
         System.out.println("  " + task);
@@ -117,7 +139,7 @@ public class Gpt {
      * Returns the task named by the number in the given input.
      * The number shown to the user starts at 1, so it is shifted to a 0-based index.
      */
-    private Task getTask(String input) throws GptException {
+    private int getTaskIndex(String input) throws GptException {
         String[] parts = input.split(" ", 2);
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
             throw new GptException("OOPS!!! Please tell me which task number to update.");
@@ -133,7 +155,7 @@ public class Gpt {
         if (taskNumber < 1 || taskNumber > taskCount) {
             throw new GptException("OOPS!!! That task number does not exist.");
         }
-        return tasks[taskNumber - 1];
+        return taskNumber - 1;
     }
 
     /**
