@@ -1,12 +1,12 @@
 package gpt;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * Runs the GPT chatbot application.
  */
 public class Gpt {
-    private static final int MAX_TASKS = 100;
     private static final String BANNER = "  ____ ____ _____ \n"
             + " / ___|  _ \\_   _|\n"
             + "| |  _| |_) || |  \n"
@@ -14,8 +14,8 @@ public class Gpt {
             + " \\____|_|    |_|  \n";
     private static final String LINE = "____________________________________________________________";
 
-    private final Task[] tasks = new Task[MAX_TASKS];
-    private int taskCount = 0;
+    private final Storage storage = new Storage();
+    private ArrayList<Task> tasks = new ArrayList<>();
 
     /**
      * Starts the chatbot.
@@ -29,6 +29,7 @@ public class Gpt {
      */
     private void run() {
         Scanner scanner = new Scanner(System.in);
+        loadTasks();
         printGreeting();
 
         while (true) {
@@ -75,12 +76,12 @@ public class Gpt {
     /**
      * Adds the given task to the list and confirms the addition.
      */
-    private void addTask(Task task) {
-        tasks[taskCount] = task;
-        taskCount++;
+    private void addTask(Task task) throws GptException {
+        tasks.add(task);
+        saveTasks();
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
     }
 
     /**
@@ -88,8 +89,8 @@ public class Gpt {
      */
     private void printTasks() {
         System.out.println("Here are the tasks in your list: ");
-        for (int i = 0; i < taskCount; i++) {
-            System.out.println((i + 1) + "." + tasks[i]);
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + "." + tasks.get(i));
         }
     }
 
@@ -99,6 +100,7 @@ public class Gpt {
     private void markTask(String input) throws GptException {
         Task task = getTask(input);
         task.markAsDone();
+        saveTasks();
         System.out.println("Beep boop, task has been marked.");
         System.out.println("  " + task);
     }
@@ -109,6 +111,7 @@ public class Gpt {
     private void unmarkTask(String input) throws GptException {
         Task task = getTask(input);
         task.markAsNotDone();
+        saveTasks();
         System.out.println("Beep boop, task has been unmarked.");
         System.out.println("  " + task);
     }
@@ -130,10 +133,10 @@ public class Gpt {
             throw new GptException("OOPS!!! Task numbers must be whole numbers.");
         }
 
-        if (taskNumber < 1 || taskNumber > taskCount) {
+        if (taskNumber < 1 || taskNumber > tasks.size()) {
             throw new GptException("OOPS!!! That task number does not exist.");
         }
-        return tasks[taskNumber - 1];
+        return tasks.get(taskNumber - 1);
     }
 
     /**
@@ -224,6 +227,25 @@ public class Gpt {
      */
     private static int getMarkerLength(int markerIndex, String marker) {
         return markerIndex == 0 ? marker.length() : marker.length() + 1;
+    }
+
+    /**
+     * Loads saved tasks, starting with an empty list if the file cannot be read.
+     */
+    private void loadTasks() {
+        try {
+            tasks = storage.loadTasks();
+        } catch (GptException e) {
+            System.out.println(e.getMessage());
+            tasks = new ArrayList<>();
+        }
+    }
+
+    /**
+     * Saves the current task list.
+     */
+    private void saveTasks() throws GptException {
+        storage.saveTasks(tasks);
     }
 
     /**
