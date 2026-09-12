@@ -332,6 +332,65 @@ ____________________________________________________________
 
 ---
 
+## TC-08: Delete task
+
+**Aim:** Verify that `delete` removes the correct task, prints the removed task,
+updates the task count, and leaves the remaining tasks in order.
+
+**Input**
+
+```
+todo read book
+deadline return book /by Sunday
+event project meeting /from Mon 2pm /to 4pm
+delete 2
+list
+delete abc
+delete 3
+bye
+```
+
+**Expected output**
+
+```
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've removed this task:
+  [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] read book
+2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Task numbers must be whole numbers.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Bye. Make sure to buy more tokens
+____________________________________________________________
+```
+
+---
+
 ## Known limitations locked in by this plan
 
 These are current behaviors the tests deliberately record, not defects to fix

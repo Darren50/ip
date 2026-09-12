@@ -1,12 +1,12 @@
 package gpt;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * Runs the GPT chatbot application.
  */
 public class Gpt {
-    private static final int MAX_TASKS = 100;
     private static final String BANNER = "  ____ ____ _____ \n"
             + " / ___|  _ \\_   _|\n"
             + "| |  _| |_) || |  \n"
@@ -14,8 +14,7 @@ public class Gpt {
             + " \\____|_|    |_|  \n";
     private static final String LINE = "____________________________________________________________";
 
-    private final Task[] tasks = new Task[MAX_TASKS];
-    private int taskCount = 0;
+    private final ArrayList<Task> tasks = new ArrayList<>();
 
     /**
      * Starts the chatbot.
@@ -61,6 +60,8 @@ public class Gpt {
             markTask(input);
         } else if (commandWord.equals("unmark")) {
             unmarkTask(input);
+        } else if (commandWord.equals("delete")) {
+            deleteTask(input);
         } else if (commandWord.equals("todo")) {
             addTask(parseTodo(input));
         } else if (commandWord.equals("deadline")) {
@@ -76,11 +77,10 @@ public class Gpt {
      * Adds the given task to the list and confirms the addition.
      */
     private void addTask(Task task) {
-        tasks[taskCount] = task;
-        taskCount++;
+        tasks.add(task);
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
     }
 
     /**
@@ -88,8 +88,8 @@ public class Gpt {
      */
     private void printTasks() {
         System.out.println("Here are the tasks in your list: ");
-        for (int i = 0; i < taskCount; i++) {
-            System.out.println((i + 1) + "." + tasks[i]);
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + "." + tasks.get(i));
         }
     }
 
@@ -97,17 +97,29 @@ public class Gpt {
      * Marks the task named in the given input as done.
      */
     private void markTask(String input) throws GptException {
-        Task task = getTask(input);
+        Task task = tasks.get(getTaskIndex(input));
         task.markAsDone();
         System.out.println("Beep boop, task has been marked.");
         System.out.println("  " + task);
     }
 
     /**
+     * Deletes the task named in the given input.
+     */
+    private void deleteTask(String input) throws GptException {
+        int taskIndex = getTaskIndex(input);
+        Task deletedTask = tasks.remove(taskIndex);
+
+        System.out.println("Got it. I've removed this task:");
+        System.out.println("  " + deletedTask);
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+    }
+
+    /**
      * Marks the task named in the given input as not done.
      */
     private void unmarkTask(String input) throws GptException {
-        Task task = getTask(input);
+        Task task = tasks.get(getTaskIndex(input));
         task.markAsNotDone();
         System.out.println("Beep boop, task has been unmarked.");
         System.out.println("  " + task);
@@ -117,7 +129,7 @@ public class Gpt {
      * Returns the task named by the number in the given input.
      * The number shown to the user starts at 1, so it is shifted to a 0-based index.
      */
-    private Task getTask(String input) throws GptException {
+    private int getTaskIndex(String input) throws GptException {
         String[] parts = input.split(" ", 2);
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
             throw new GptException("OOPS!!! Please tell me which task number to update.");
@@ -130,10 +142,10 @@ public class Gpt {
             throw new GptException("OOPS!!! Task numbers must be whole numbers.");
         }
 
-        if (taskNumber < 1 || taskNumber > taskCount) {
+        if (taskNumber < 1 || taskNumber > tasks.size()) {
             throw new GptException("OOPS!!! That task number does not exist.");
         }
-        return tasks[taskNumber - 1];
+        return taskNumber - 1;
     }
 
     /**
