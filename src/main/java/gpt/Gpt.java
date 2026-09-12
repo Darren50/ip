@@ -2,7 +2,7 @@ package gpt;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.util.ArrayList;
 /**
  * Runs the GPT chatbot application.
  */
@@ -14,7 +14,8 @@ public class Gpt {
             + " \\____|_|    |_|  \n";
     private static final String LINE = "____________________________________________________________";
 
-    private final ArrayList<Task> tasks = new ArrayList<>();
+    private final Storage storage = new Storage();
+    private ArrayList<Task> tasks = new ArrayList<>();
 
     /**
      * Starts the chatbot.
@@ -28,6 +29,7 @@ public class Gpt {
      */
     private void run() {
         Scanner scanner = new Scanner(System.in);
+        loadTasks();
         printGreeting();
 
         while (true) {
@@ -76,8 +78,9 @@ public class Gpt {
     /**
      * Adds the given task to the list and confirms the addition.
      */
-    private void addTask(Task task) {
+    private void addTask(Task task) throws GptException {
         tasks.add(task);
+        saveTasks();
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + task);
         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
@@ -99,6 +102,7 @@ public class Gpt {
     private void markTask(String input) throws GptException {
         Task task = tasks.get(getTaskIndex(input));
         task.markAsDone();
+        saveTasks();
         System.out.println("Beep boop, task has been marked.");
         System.out.println("  " + task);
     }
@@ -121,6 +125,7 @@ public class Gpt {
     private void unmarkTask(String input) throws GptException {
         Task task = tasks.get(getTaskIndex(input));
         task.markAsNotDone();
+        saveTasks();
         System.out.println("Beep boop, task has been unmarked.");
         System.out.println("  " + task);
     }
@@ -236,6 +241,25 @@ public class Gpt {
      */
     private static int getMarkerLength(int markerIndex, String marker) {
         return markerIndex == 0 ? marker.length() : marker.length() + 1;
+    }
+
+    /**
+     * Loads saved tasks, starting with an empty list if the file cannot be read.
+     */
+    private void loadTasks() {
+        try {
+            tasks = storage.loadTasks();
+        } catch (GptException e) {
+            System.out.println(e.getMessage());
+            tasks = new ArrayList<>();
+        }
+    }
+
+    /**
+     * Saves the current task list.
+     */
+    private void saveTasks() throws GptException {
+        storage.saveTasks(tasks);
     }
 
     /**

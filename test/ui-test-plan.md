@@ -9,6 +9,9 @@ Run these with the `test-ui` skill.
 ## How a scenario is checked
 
 * The commands under **Input** are sent to the program one per line, in order.
+* Before each scenario except TC-08, delete `data/gpt.txt` if it exists, so the
+  scenario starts with an empty task list.
+* TC-08 starts with a prepared `data/gpt.txt` file to verify loading saved data.
 * The text under **Expected output** is compared against the **end** of the
   program's console output. The startup banner is a fixed prefix and is only
   checked explicitly by TC-01, so the other scenarios do not repeat it.
@@ -324,6 +327,42 @@ OOPS!!! Task numbers must be whole numbers.
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Bye. Make sure to buy more tokens
+____________________________________________________________
+```
+
+---
+
+## TC-08: Load saved tasks
+
+**Aim:** Verify that saved todo, deadline, and event tasks are loaded when the
+chatbot starts.
+
+**Setup file: `data/gpt.txt`**
+
+```
+T | 1 | read book
+D | 0 | return book | Sunday
+E | 0 | project meeting | Mon 2pm | 4pm
+```
+
+**Input**
+
+```
+list
+bye
+```
+
+**Expected output**
+
+```
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][X] read book
+2.[D][ ] return book (by: Sunday)
+3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Make sure to buy more tokens
