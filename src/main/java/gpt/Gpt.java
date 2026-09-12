@@ -2,7 +2,7 @@ package gpt;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.ArrayList;
+
 /**
  * Runs the GPT chatbot application.
  */
@@ -117,6 +117,7 @@ public class Gpt {
         System.out.println("Got it. I've removed this task:");
         System.out.println("  " + deletedTask);
         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        saveTasks();
     }
 
     /**

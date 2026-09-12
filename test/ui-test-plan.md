@@ -371,7 +371,7 @@ ____________________________________________________________
 
 ---
 
-## TC-08: Delete task
+## TC-09: Delete task
 
 **Aim:** Verify that `delete` removes the correct task, prints the removed task,
 updates the task count, and leaves the remaining tasks in order.
