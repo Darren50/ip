@@ -1,20 +1,20 @@
 package gpt;
 
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Runs the GPT chatbot application.
  */
 public class Gpt {
-
-    private final ArrayList<Task> tasks = new ArrayList<>();
     private static final String BANNER = "  ____ ____ _____ \n"
             + " / ___|  _ \\_   _|\n"
             + "| |  _| |_) || |  \n"
             + "| |_| |  __/ | |  \n"
             + " \\____|_|    |_|  \n";
     private static final String LINE = "____________________________________________________________";
+
+    private final ArrayList<Task> tasks = new ArrayList<>();
 
     /**
      * Starts the chatbot.
@@ -60,10 +60,9 @@ public class Gpt {
             markTask(input);
         } else if (commandWord.equals("unmark")) {
             unmarkTask(input);
-        }else if (commandWord.equals("delete")) {
+        } else if (commandWord.equals("delete")) {
             deleteTask(input);
-        }
-        else if (commandWord.equals("todo")) {
+        } else if (commandWord.equals("todo")) {
             addTask(parseTodo(input));
         } else if (commandWord.equals("deadline")) {
             addTask(parseDeadline(input));
@@ -103,6 +102,7 @@ public class Gpt {
         System.out.println("Beep boop, task has been marked.");
         System.out.println("  " + task);
     }
+
     /**
      * Deletes the task named in the given input.
      */
@@ -124,6 +124,7 @@ public class Gpt {
         System.out.println("Beep boop, task has been unmarked.");
         System.out.println("  " + task);
     }
+
     /**
      * Returns the task named by the number in the given input.
      * The number shown to the user starts at 1, so it is shifted to a 0-based index.
