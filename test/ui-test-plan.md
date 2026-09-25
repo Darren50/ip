@@ -101,7 +101,7 @@ correct type icon and date fields, that the running count is correct, and that
 
 ```
 todo borrow book
-deadline return book /by Sunday
+deadline return book /by 2019-10-15
 event project meeting /from Mon 2pm /to 4pm
 list
 bye
@@ -117,7 +117,7 @@ Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-  [D][ ] return book (by: Sunday)
+  [D][ ] return book (by: Oct 15 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -128,7 +128,7 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][ ] borrow book
-2.[D][ ] return book (by: Sunday)
+2.[D][ ] return book (by: Oct 15 2019)
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
@@ -186,17 +186,15 @@ ____________________________________________________________
 
 ---
 
-## TC-05: Descriptions and dates containing spaces and punctuation
+## TC-05: Parse and display deadline dates
 
-**Aim:** Verify that the command parser splits only on the `/by`, `/from`, and
-`/to` markers, so that multi-word descriptions and free-form dates survive
-intact. This is the case that fails if the parser splits the input on every
-space.
+**Aim:** Verify that deadline dates in `yyyy-MM-dd` format are displayed in a
+readable format, while multi-word event descriptions and dates remain intact.
 
 **Input**
 
 ```
-deadline do homework /by no idea :-p
+deadline do homework /by 2019-12-02
 event orientation week /from 4/10/2019 /to 11/10/2019
 list
 bye
@@ -207,7 +205,7 @@ bye
 ```
 ____________________________________________________________
 Got it. I've added this task:
-  [D][ ] do homework (by: no idea :-p)
+  [D][ ] do homework (by: Dec 2 2019)
 Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -217,7 +215,7 @@ Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1.[D][ ] do homework (by: no idea :-p)
+1.[D][ ] do homework (by: Dec 2 2019)
 2.[E][ ] orientation week (from: 4/10/2019 to: 11/10/2019)
 ____________________________________________________________
 ____________________________________________________________
@@ -239,6 +237,7 @@ todo
 deadline return book
 deadline /by Sunday
 deadline return book /by
+deadline return book /by Sunday
 event project meeting
 event /from Mon 2pm /to 4pm
 event project meeting /from Mon 2pm
@@ -261,6 +260,9 @@ OOPS!!! The description of a deadline cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! The deadline date or time cannot be empty.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter the deadline date as yyyy-MM-dd.
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! An event needs a /from date or time.
@@ -344,7 +346,7 @@ chatbot starts.
 
 ```
 T | 1 | read book
-D | 0 | return book | Sunday
+D | 0 | return book | 2019-10-15
 E | 0 | project meeting | Mon 2pm | 4pm
 ```
 
@@ -361,7 +363,7 @@ bye
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][X] read book
-2.[D][ ] return book (by: Sunday)
+2.[D][ ] return book (by: Oct 15 2019)
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
@@ -380,7 +382,7 @@ updates the task count, and leaves the remaining tasks in order.
 
 ```
 todo read book
-deadline return book /by Sunday
+deadline return book /by 2019-10-15
 event project meeting /from Mon 2pm /to 4pm
 delete 2
 list
@@ -399,7 +401,7 @@ Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-  [D][ ] return book (by: Sunday)
+  [D][ ] return book (by: Oct 15 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -409,7 +411,7 @@ Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've removed this task:
-  [D][ ] return book (by: Sunday)
+  [D][ ] return book (by: Oct 15 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________

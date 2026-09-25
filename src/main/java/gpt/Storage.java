@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 /**
@@ -16,8 +18,8 @@ public class Storage {
     /**
      * Loads tasks from the save file, returning an empty list if the file does not exist.
      */
-    public ArrayList<Task> loadTasks() throws GptException {
-        ArrayList<Task> tasks = new ArrayList<>();
+    public TaskList loadTasks() throws GptException {
+        TaskList tasks = new TaskList();
         if (!Files.exists(FILE_PATH)) {
             return tasks;
         }
@@ -38,7 +40,7 @@ public class Storage {
     /**
      * Saves the given tasks to the save file, creating the data folder if needed.
      */
-    public void saveTasks(ArrayList<Task> tasks) throws GptException {
+    public void saveTasks(TaskList tasks) throws GptException {
         try {
             Path parent = FILE_PATH.getParent();
             if (parent != null) {
@@ -99,7 +101,11 @@ public class Storage {
         if (parts.length != 4 || parts[2].isBlank() || parts[3].isBlank()) {
             return null;
         }
-        return new Deadline(parts[2], parts[3]);
+        try {
+            return new Deadline(parts[2], LocalDate.parse(parts[3]));
+        } catch (DateTimeParseException e) {
+            return null;
+        }
     }
 
     private Task parseEvent(String[] parts) {
