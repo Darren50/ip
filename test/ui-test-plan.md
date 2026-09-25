@@ -432,6 +432,55 @@ ____________________________________________________________
 
 ---
 
+## TC-10: Find tasks by keyword
+
+**Aim:** Verify that `find` displays tasks whose descriptions contain the
+keyword, ignores letter case, and reports a missing keyword without crashing.
+
+**Input**
+
+```
+todo read book
+deadline return book /by 2019-10-15
+todo write essay
+find BOOK
+find
+bye
+```
+
+**Expected output**
+
+```
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [D][ ] return book (by: Oct 15 2019)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] write essay
+Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
+1.[T][ ] read book
+2.[D][ ] return book (by: Oct 15 2019)
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter a keyword to find.
+____________________________________________________________
+____________________________________________________________
+Bye. Make sure to buy more tokens
+____________________________________________________________
+```
+
+---
+
 ## Known limitations locked in by this plan
 
 These are current behaviors the tests deliberately record, not defects to fix
