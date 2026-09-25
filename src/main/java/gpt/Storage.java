@@ -16,8 +16,8 @@ public class Storage {
     /**
      * Loads tasks from the save file, returning an empty list if the file does not exist.
      */
-    public ArrayList<Task> loadTasks() throws GptException {
-        ArrayList<Task> tasks = new ArrayList<>();
+    public TaskList loadTasks() throws GptException {
+        TaskList tasks = new TaskList();
         if (!Files.exists(FILE_PATH)) {
             return tasks;
         }
@@ -38,7 +38,7 @@ public class Storage {
     /**
      * Saves the given tasks to the save file, creating the data folder if needed.
      */
-    public void saveTasks(ArrayList<Task> tasks) throws GptException {
+    public void saveTasks(TaskList tasks) throws GptException {
         try {
             Path parent = FILE_PATH.getParent();
             if (parent != null) {
