@@ -59,6 +59,20 @@ public class Ui {
      */
     public void showTasks(TaskList tasks) {
         System.out.println("Here are the tasks in your list: ");
+        showNumberedTasks(tasks);
+    }
+
+    /**
+     * Displays tasks that match a search keyword, numbered from 1.
+     *
+     * @param tasks matching tasks to display
+     */
+    public void showMatchingTasks(TaskList tasks) {
+        System.out.println("Here are the matching tasks in your list:");
+        showNumberedTasks(tasks);
+    }
+
+    private void showNumberedTasks(TaskList tasks) {
         int taskNumber = 1;
         for (Task task : tasks) {
             System.out.println(taskNumber + "." + task);

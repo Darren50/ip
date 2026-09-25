@@ -50,6 +50,8 @@ public class Gpt {
     private void handleCommand(String commandWord, String input) throws GptException {
         if (commandWord.equals("list")) {
             ui.showTasks(tasks);
+        } else if (commandWord.equals("find")) {
+            findTasks(input);
         } else if (commandWord.equals("mark")) {
             markTask(input);
         } else if (commandWord.equals("unmark")) {
@@ -72,6 +74,15 @@ public class Gpt {
         tasks.add(task);
         saveTasks();
         ui.showTaskAdded(task, tasks.size());
+    }
+
+    /**
+     * Displays tasks with descriptions that contain the keyword in the given input.
+     */
+    private void findTasks(String input) throws GptException {
+        String keyword = Parser.parseFindKeyword(input);
+        TaskList matchingTasks = tasks.find(keyword);
+        ui.showMatchingTasks(matchingTasks);
     }
 
     /**

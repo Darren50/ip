@@ -2,6 +2,7 @@ package gpt;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Stores and manages the user's tasks.
@@ -59,6 +60,25 @@ public class TaskList implements Iterable<Task> {
      */
     public int size() {
         return tasks.size();
+    }
+
+    /**
+     * Returns tasks whose descriptions contain the given keyword.
+     * The search is case-insensitive.
+     *
+     * @param keyword keyword to search for
+     * @return matching tasks
+     */
+    public TaskList find(String keyword) {
+        TaskList matchingTasks = new TaskList();
+        String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
+        for (Task task : tasks) {
+            String description = task.getDescription().toLowerCase(Locale.ROOT);
+            if (description.contains(normalizedKeyword)) {
+                matchingTasks.add(task);
+            }
+        }
+        return matchingTasks;
     }
 
     @Override

@@ -65,6 +65,21 @@ public class Parser {
         return taskNumber - 1;
     }
 
+    /**
+     * Returns the keyword in a find command.
+     *
+     * @param input full user input
+     * @return keyword to search for
+     * @throws GptException if the keyword is missing
+     */
+    public static String parseFindKeyword(String input) throws GptException {
+        String keyword = input.substring("find".length()).trim();
+        if (keyword.isEmpty()) {
+            throw new GptException("OOPS!!! Please enter a keyword to find.");
+        }
+        return keyword;
+    }
+
     private static Task parseTodo(String input) throws GptException {
         String description = input.substring("todo".length()).trim();
 
