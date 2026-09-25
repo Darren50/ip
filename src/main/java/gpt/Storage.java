@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 /**
@@ -99,7 +101,11 @@ public class Storage {
         if (parts.length != 4 || parts[2].isBlank() || parts[3].isBlank()) {
             return null;
         }
-        return new Deadline(parts[2], parts[3]);
+        try {
+            return new Deadline(parts[2], LocalDate.parse(parts[3]));
+        } catch (DateTimeParseException e) {
+            return null;
+        }
     }
 
     private Task parseEvent(String[] parts) {

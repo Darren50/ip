@@ -1,5 +1,8 @@
 package gpt;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 /**
  * Parses user commands and their arguments.
  */
@@ -83,15 +86,21 @@ public class Parser {
             throw new GptException("OOPS!!! A deadline needs a /by date or time.");
         }
         String description = arguments.substring(0, byMarkerIndex).trim();
-        String by = arguments.substring(byMarkerIndex + getMarkerLength(byMarkerIndex, "/by")).trim();
+        String byText = arguments.substring(byMarkerIndex + getMarkerLength(byMarkerIndex, "/by")).trim();
 
         if (description.isEmpty()) {
             throw new GptException("OOPS!!! The description of a deadline cannot be empty.");
         }
-        if (by.isEmpty()) {
+        if (byText.isEmpty()) {
             throw new GptException("OOPS!!! The deadline date or time cannot be empty.");
         }
-        return new Deadline(description, by);
+
+        try {
+            LocalDate by = LocalDate.parse(byText);
+            return new Deadline(description, by);
+        } catch (DateTimeParseException e) {
+            throw new GptException("OOPS!!! Please enter the deadline date as yyyy-MM-dd.");
+        }
     }
 
     private static Task parseEvent(String input) throws GptException {
